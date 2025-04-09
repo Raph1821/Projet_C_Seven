@@ -1,8 +1,8 @@
 #pragma once // une directive préprocesseur qui permet d'éviter l'inclusion multiple d'un fichier d'en-tête(.h/.hpp)
 
 #include <string>
-#include <unordered_map> 
-#include <iostream>
+#include <unordered_map> // Unordered map est une collection de paires clé-valeur, où les clés sont uniques et non ordonnées, ce qui signifie que les éléments ne sont pas triés
+#include <iostream> 
 
 namespace sevens {  // Éviter les conflits de noms + Organiser le code + Rendre le code plus lisible 
 
@@ -35,12 +35,19 @@ public:
         // uint64_t :  une clé de type entier non signé 64 bits 
         // Card : type de la valeur associée à chaque clé --> une struct ou une classe 
         // & get_cards_hashmap() : retourne une référence vers une table de hachage stockée dans l'objet 
+
+        // La fonction get_cards_hashmap() retourne une référence constante vers un unordered_map dont les clés sont des entiers de 64 bits 
+        // (uint64_t) et les valeurs sont de type Card. Cette référence ne permet pas de modifier l'objet retourné. En d'autres termes, tu 
+        // peux accéder à la carte sans la modifier.
         return this->cards_hashmap;
     }
 
 protected:
     // Key = card ID (0..51), Value = Card struct
-    std::unordered_map<uint64_t, Card> cards_hashmap;
+    std::unordered_map<uint64_t, Card> cards_hashmap; 
+    // cards_hashmap est une structure qui permet de stocker efficacement des cartes, indexées par un identifiant unique (uint64_t), 
+    // ce qui facilite un accès rapide aux cartes en utilisant leur ID. Cela permet une gestion efficace des cartes dans des jeux ou 
+    // des applications similaires, où la recherche rapide et l'accès aux éléments sont cruciaux.
 };
 
 } // namespace sevens
