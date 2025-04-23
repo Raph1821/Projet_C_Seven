@@ -24,6 +24,8 @@ protected:
     // For each suit -> rank -> bool (true if on table)
     std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>> table_layout; // Un unordered_map dont les clés sont des entiers de 64 bits 
     // (uint64_t) et les valeurs sont de type d'un unordered_map dont les clés sont des entiers de 64 bits (uint64_t) et les valeurs sont de type bool 
+    // table_layout[suit][rank] = true signifie que la carte de couleur 'suit' et de rang 'rank' est présente sur la table
+
 };
 
 } // namespace sevens 

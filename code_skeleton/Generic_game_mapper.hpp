@@ -1,9 +1,9 @@
 #pragma once // une directive de préprocesseur qui permet d'éviter l'inclusion multiple d'un fichier d'en-tête(.hpp)
 
 #include "Generic_game_parser.hpp"
-#include <string>
-#include <vector>
-#include <utility>
+#include <string> // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
+#include <vector> // C’est une directive pour inclure la bibliothèque standard C++ qui contient le type std::vector --> un tableau dynamique --> pouvoir changer de taille à l'exécution + facilement ajouter ou retirer .push_back(),.pop_back() + plus flexible que les tableaux int[] classiques
+#include <utility> // Ce header contient des outils utilitaires : pair,make_pair(),move,...
 
 namespace sevens {
 
