@@ -23,7 +23,7 @@ void MyCardParser::read_cards(const std::string& filename) {
             int suit,rank;
 
             // Si la ligne est valide (contient une couleur et un rang)
-            if (iss >> suit >> rank){ // 'iss' : flux d'entrée à partir de la chaine de caractèré 'line' - >> suit >> rank : extraire deux entiers à partir du flux 'iss'
+            if (iss >> suit >> rank){ // 'iss' : flux d'entrée à partir de la chaine de caractère 'line' - >> suit >> rank : extraire deux entiers à partir du flux 'iss'
                 this->cards_hashmap[card_id]=Card{suit,rank}; // Card{suit,rank} crée une instance de la structure 'Card' où : 'suit' est le premier argument(couleur) et 'rank' le second (rang)
                 card_id++; // Incrémenter l'ID de la carte
             }else{
