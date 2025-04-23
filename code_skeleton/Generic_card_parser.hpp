@@ -37,8 +37,8 @@ public:
         // & get_cards_hashmap() : retourne une référence vers une table de hachage stockée dans l'objet 
 
         // La fonction get_cards_hashmap() retourne une référence constante vers un unordered_map dont les clés sont des entiers de 64 bits 
-        // (uint64_t) et les valeurs sont de type Card. Cette référence ne permet pas de modifier l'objet retourné. En d'autres termes, tu 
-        // peux accéder à la carte sans la modifier.
+        // (uint64_t) et les valeurs sont de type Card. Cette référence ne permet pas de modifier l'objet retourné. En d'autres termes, on 
+        // peut accéder à la carte sans la modifier.
         return this->cards_hashmap;
     }
 
