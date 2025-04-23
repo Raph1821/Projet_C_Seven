@@ -16,14 +16,14 @@ public:
     virtual void read_game(const std::string& filename) = 0; // une méthode que les sous-classes vont utiliser 
 
     // Provide read-only access to the table layout
-    const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& 
-    get_table_layout() const {
-        return this->table_layout; // get_table_layout() est in getter qui retourne une référence constante vers une structure de donnée appelée 'table_layout' 
+    const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& get_table_layout() const {
+        return this->table_layout; // get_table_layout() est un getter qui retourne une référence constante vers une structure de donnée appelée 'table_layout' 
     }
 
 protected:
     // For each suit -> rank -> bool (true if on table)
-    std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>> table_layout;
+    std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>> table_layout; // Un unordered_map dont les clés sont des entiers de 64 bits 
+    // (uint64_t) et les valeurs sont de type d'un unordered_map dont les clés sont des entiers de 64 bits (uint64_t) et les valeurs sont de type bool 
 };
 
-} // namespace sevens
+} // namespace sevens 
