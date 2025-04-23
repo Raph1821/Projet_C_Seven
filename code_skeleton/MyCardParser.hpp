@@ -10,7 +10,7 @@ namespace sevens {
  */
 class MyCardParser : public Generic_card_parser {
 public:
-    MyCardParser() = default;   // le constructeur par défaut de la classe MyCardParser est généré automatiquement par le compilateur sans aucun code spécìique 
+    MyCardParser() = default;   // le constructeur par défaut de la classe MyCardParser est généré automatiquement par le compilateur sans aucun code spécifique 
     ~MyCardParser() = default;  // Pareil mais c'est un destructeur 
 
     void read_cards(const std::string& filename) override;
