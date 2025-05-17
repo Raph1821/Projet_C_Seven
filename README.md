@@ -1,6 +1,6 @@
 # **SEVEN DEADLY SINS**
 
-### Participants : Minh Nhut NGUYEN & Manel MOULAHCENE
+#### Participants : Minh Nhut NGUYEN & Manel MOULAHCENE
 
 ## **Project Overview**
 
