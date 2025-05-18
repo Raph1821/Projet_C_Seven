@@ -36,5 +36,9 @@ void GreedyStrategy::observePass(uint64_t /*playerID*/) {
 std::string GreedyStrategy::getName() const {
     return "GreedyStrategy";
 }
-
+#ifndef STATIC_BUILD
+extern "C" sevens::PlayerStrategy* createStrategy() {
+    return new sevens::GreedyStrategy(); 
+}
+#endif
 } // namespace sevens

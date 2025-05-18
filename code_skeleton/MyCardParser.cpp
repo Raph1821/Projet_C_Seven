@@ -24,7 +24,7 @@ void MyCardParser::read_cards(const std::string& filename) {
 
             // Si la ligne est valide (contient une couleur et un rang)
             if (iss >> suit >> rank){ // 'iss' : flux d'entrée à partir de la chaine de caractère 'line' - >> suit >> rank : extraire deux entiers à partir du flux 'iss'
-                this->cards_hashmap[card_id]=Card{suit,rank}; // Card{suit,rank} crée une instance de la structure 'Card' où : 'suit' est le premier argument(couleur) et 'rank' le second (rang)
+                this->cards_hashmap[card_id] = Card(static_cast<uint64_t>(suit), static_cast<uint64_t>(rank));; // Card{suit,rank} crée une instance de la structure 'Card' où : 'suit' est le premier argument(couleur) et 'rank' le second (rang)
                 card_id++; // Incrémenter l'ID de la carte
             }else{
                 std::cerr << "Erreur de format dans le fichier à la ligne : " << line << std::endl;
@@ -38,7 +38,7 @@ void MyCardParser::read_cards(const std::string& filename) {
         uint64_t card_id = 0; // ID unique pour chaque carte 
         for (int suit=0;suit<4;suit++){
             for (int rank=0;rank<52;rank++){
-                this->cards_hashmap[card_id]=Card{suit,rank}; // Ajouter la carte au hashmap 
+                this->cards_hashmap[card_id] = Card(static_cast<uint64_t>(suit), static_cast<uint64_t>(rank));;// Ajouter la carte au hashmap 
                 card_id++;
             }
         }

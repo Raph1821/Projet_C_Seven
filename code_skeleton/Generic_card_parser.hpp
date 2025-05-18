@@ -12,8 +12,12 @@ namespace sevens {  // Éviter les conflits de noms + Organiser le code + Rendre
  *   rank: 1..13 (1=Ace,2=2,...,13=King)
  */
 struct Card {   // Fonctionne comme une classe, la différence ici c'est que les membres de struct sont publics par défaut, types de données simples 
-    int suit;
-    int rank;
+    uint64_t suit;
+    uint64_t rank;
+
+    
+    Card() = default;
+    Card(uint64_t s, uint64_t r) : suit(s), rank(r) {}
 
     friend std::ostream& operator<<(std::ostream& os, const Card& card) {
         os << "Card(suit=" << card.suit << ", rank=" << card.rank << ")";

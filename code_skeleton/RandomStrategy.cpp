@@ -49,5 +49,9 @@ void RandomStrategy::observePass(uint64_t /*playerID*/) {
 std::string RandomStrategy::getName() const {
     return "RandomStrategy";
 }
-
+#ifndef STATIC_BUILD
+extern "C" sevens::PlayerStrategy* createStrategy() {
+    return new sevens::RandomStrategy(); 
+}
+#endif
 } // namespace sevens

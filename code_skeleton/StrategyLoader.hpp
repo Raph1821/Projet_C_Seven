@@ -14,11 +14,7 @@ namespace sevens {
  */
 class StrategyLoader {
 public:
-    static std::shared_ptr<PlayerStrategy> loadFromLibrary(const std::string& libraryPath) {
-        // TODO: dynamic loading, or stub
-        // For a skeleton, you might just throw an exception:
-        throw std::runtime_error("StrategyLoader::loadFromLibrary is not implemented in skeleton.");
-    }
+    static std::shared_ptr<PlayerStrategy> loadFromLibrary(const std::string& libraryPath);
 };
 
 } // namespace sevens

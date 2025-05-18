@@ -120,6 +120,10 @@ std::vector<std::pair<uint64_t, uint64_t>>MyGameMapper::compute_game_progress(ui
 
     // Initialiser les mains des joueurs
     playerHands.clear();
+    
+    for (const auto& [playerID, _] : playerStrategies) {
+    playerHands[playerID] = {};  // Initialise une main vide pour chaque stratégie enregistrée
+}
 
     // Distribuer les cartes aux joueurs (simple exemple avec des cartes séquentielles)
     for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
@@ -137,10 +141,21 @@ std::vector<std::pair<uint64_t, uint64_t>>MyGameMapper::compute_game_progress(ui
             auto& hand = playerHands[playerID];  // Obtenir la main du joueur -> pointe directement sur le vecteur de cartes du joueur identifié par playerID -> playerHands[playerID] Accède au vecteur de cartes associé au joueur avec l'identifiant playerID dans la map playerHands
 
             uint64_t cardIndex = strategy->selectCardToPlay(hand, table_layout); // La stratégie choisit une carte
+            if (cardIndex >= hand.size()) {
+    std::cerr << "[ERREUR] Strategie a retourné un index invalide : " << cardIndex
+              << " (taille de la main : " << hand.size() << ") pour le joueur " << playerID << std::endl;
+    continue;
+}
             if (cardIndex < hand.size()) {  // Vérifier si l'indice est valide 
                 Card card = hand[cardIndex];// La carte sélectionnée 
-                table_layout[card.suit][card.rank] = true;  // Placer la carte sur la table 
-                hand.erase(hand.begin() + static_cast<int>(cardIndex)); // Retirer la carte jouée
+                if (card.suit <= 3 && card.rank <= 12) {
+                     table_layout[card.suit][card.rank] = true;
+                     } else {
+    std::cerr << "[ERREUR] Carte invalide jouée : suit=" << card.suit << ", rank=" << card.rank << std::endl;
+}
+
+hand.erase(hand.begin() + static_cast<int>(cardIndex));
+                
             }
         }
     }
