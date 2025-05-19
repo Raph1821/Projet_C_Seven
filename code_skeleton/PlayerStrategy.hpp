@@ -34,6 +34,10 @@ public:
 };
 
 // Type for strategy factory functions (for dynamic loading)
-typedef PlayerStrategy* (*CreateStrategyFn)();
+typedef PlayerStrategy* (*CreateStrategyFn)(); // une déclaration de type qui définit un alias de type appelé CreateStrategyFn
+// PlayerStrategy* : Le type de retour de la fonction pointée est un pointeur vers un objet de type PlayerStrategy
+// CreateStrategyFn est un alias pour un pointeur de fonction qui : Ne prend aucun argument. Retourne un pointeur vers un objet de type PlayerStrategy.
+// Pourquoi ? Cela permet de stocker des fonctions de création de stratégie dans des variables ou des conteneurs.
+// -> Très utile pour des usines (factories) de création de stratégies, ou pour sélectionner dynamiquement des stratégies.
 
 } // namespace sevens
