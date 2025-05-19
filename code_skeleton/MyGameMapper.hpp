@@ -8,6 +8,7 @@
 #include <vector> // C’est une directive pour inclure la bibliothèque standard C++ qui contient le type std::vector --> un tableau dynamique --> pouvoir changer de taille à l'exécution + facilement ajouter ou retirer .push_back(),.pop_back() + plus flexible que les tableaux int[] classiques
 #include <memory> // les pointeurs intelligents (smart pointers) et d'autres outils de gestion de mémoire moderne en C++ (unique_ptr<T>,shared_ptr<T>,weak_ptr<T>,make_unique<T>,make_shared<T>)
 #include <string> // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
+#include <cstdint>
 
 namespace sevens {
 

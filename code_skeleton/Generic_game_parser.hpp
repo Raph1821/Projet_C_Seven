@@ -3,6 +3,7 @@
 #include "Generic_card_parser.hpp"
 #include <unordered_map> // Unordered map est une collection de paires clé-valeur, où les clés sont uniques et non ordonnées, ce qui signifie que les éléments ne sont pas triés
 #include <string> // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
+#include <cstdint>
 
 namespace sevens {
 

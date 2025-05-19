@@ -3,6 +3,7 @@
 #include "PlayerStrategy.hpp"
 #include <random>
 #include <chrono>
+#include <cstdint>
 
 namespace sevens {
 

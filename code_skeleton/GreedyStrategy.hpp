@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PlayerStrategy.hpp"
+#include <cstdint>
 
 namespace sevens {
 

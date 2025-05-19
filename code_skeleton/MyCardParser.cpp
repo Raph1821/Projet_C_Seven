@@ -3,6 +3,7 @@
 #include <fstream> // Permet de lire et d'écrire dans un fichier (file stream)
 #include <sstream> // Permet de manipuler des chaînes de caractères comme si elles étaient des flux de données
 #include <string>  // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
+#include <cstdint>
 
 namespace sevens {
 

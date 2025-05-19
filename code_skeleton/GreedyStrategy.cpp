@@ -1,6 +1,7 @@
 #include "GreedyStrategy.hpp"
 #include <algorithm>
 #include <iostream>
+#include <cstdint>
 
 namespace sevens {
 

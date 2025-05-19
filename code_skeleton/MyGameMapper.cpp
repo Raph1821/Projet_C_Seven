@@ -5,6 +5,7 @@
 #include <stdexcept> // Contenir des classes d'exceptions utilisées pour signaler des erreurs à l'exécution (runtime errors)
 #include <chrono> // Pour initialiser le générateur avec l'heure actuelle 
 #include <string>  // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
+#include <cstdint>
 
 namespace sevens {
 

@@ -4,6 +4,7 @@
 #include <string>
 #include <random>
 #include <chrono>
+#include <cstdint>
 
 namespace sevens {
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map> // Unordered map est une collection de paires clé-valeur, où les clés sont uniques et non ordonnées, ce qui signifie que les éléments ne sont pas triés
 #include <iostream> 
+#include <cstdint>
 
 namespace sevens {  // Éviter les conflits de noms + Organiser le code + Rendre le code plus lisible 
 
