@@ -1,14 +1,22 @@
 #include <iostream>
 #include <string>
-#include <dlfcn.h> // Pour dlopen, dlsym
 #include <memory>
 #include "StrategyLoader.hpp"
 #include "MyGameMapper.hpp"
+
 #ifdef STATIC_BUILD
 #include "RandomStrategy.hpp"
 #include "GreedyStrategy.hpp"
 #endif
+
 #include "PlayerStrategy.hpp"
+
+// Multi-plateforme for libraries changement 
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 
 // Include your framework files here...
 // e.g. #include "MyGameMapper.hpp"
@@ -21,6 +29,7 @@ int main(int argc, char* argv[]) {
     // Students should integrate their classes or call the relevant
     // game logic from MyGameMapper (or other classes) as needed.
     
+    // Arguments Verification 
     if (argc < 2) {
         std::cout << "Usage: ./sevens_game [mode] [optional libs...]\n";
         return 1;
@@ -28,10 +37,11 @@ int main(int argc, char* argv[]) {
     
     std::string mode = argv[1];
     sevens::MyGameMapper mapper;
+
     if (mode == "internal") {
     #ifdef STATIC_BUILD
        std::cout << "[main] Internal mode: 4 built-in random strategies.\n";
-       sevens::MyGameMapper mapper;
+       //sevens::MyGameMapper mapper;
 
        for (int i = 0; i < 4; ++i) {
            mapper.registerStrategy(i, std::make_shared<sevens::RandomStrategy>());
@@ -41,24 +51,24 @@ int main(int argc, char* argv[]) {
     #else
         std::cerr << "[main] Internal mode is not available without STATIC_BUILD.\n";
     #endif
-     }
+    }
     else if (mode == "demo") {
     #ifdef STATIC_BUILD
-         std::cout << "[main] Demo mode: Random vs Greedy..\n";
-         sevens::MyGameMapper mapper;
+        std::cout << "[main] Demo mode: Random vs Greedy..\n";
+        sevens::MyGameMapper mapper;
 
-         mapper.registerStrategy(0, std::make_shared<sevens::RandomStrategy>());
-         mapper.registerStrategy(1, std::make_shared<sevens::GreedyStrategy>());
+        mapper.registerStrategy(0, std::make_shared<sevens::RandomStrategy>());
+        mapper.registerStrategy(1, std::make_shared<sevens::GreedyStrategy>());
 
-         mapper.compute_and_display_game(2);
+        mapper.compute_and_display_game(2);
     #else
-         std::cerr << "[main] Demo mode is not available without STATIC_BUILD.\n";
+        std::cerr << "[main] Demo mode is not available without STATIC_BUILD.\n";
     #endif
-}
+    }
     else if (mode == "competition") {
         std::cout << "[main] Starting competition with " << (argc - 2) << " strategy libraries.\n";
     
-    sevens::MyGameMapper mapper;
+    //sevens::MyGameMapper mapper;
 
     for (int i = 2; i < argc; ++i) {
         std::string libPath = argv[i];
@@ -80,6 +90,8 @@ int main(int argc, char* argv[]) {
 }
     else {
         std::cerr << "[main] Unknown mode: " << mode << std::endl;
+        std::cerr << "Available modes : internal, demo, competition\n";
+        return 1;
     }
     
     return 0;
