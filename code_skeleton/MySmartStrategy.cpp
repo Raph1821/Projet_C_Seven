@@ -5,6 +5,7 @@
 #include <random>
 #include <chrono>
 #include <cstdint>
+#include <memory> 
 
 namespace sevens {
 
@@ -36,7 +37,7 @@ public:
          int chosenIndex = -1;
         int lowestRank = 100;
 
-        for (int i = 0; i < hand.size(); ++i) {
+        for (size_t i = 0; i < hand.size(); ++i) { // Utiliser size_t pour correspondre au type de hand.size() (non signé)
             const Card& card = hand[i];
             uint64_t suit = card.suit;
             uint64_t rank = card.rank;
@@ -45,7 +46,7 @@ public:
             bool right = (rank < 13 && tableLayout.at(suit).count(rank + 1) && tableLayout.at(suit).at(rank + 1));
 
             if (left || right) {
-                if (rank < lowestRank) {
+                if (static_cast<int>(rank) < lowestRank) { // static_cast<int> -> Forcer la conversion des types pour correspondre
                     lowestRank = rank;
                     chosenIndex = i;
                 }
@@ -79,5 +80,17 @@ private:
 extern "C" PlayerStrategy* createStrategy() {
     return new MySmartStrategy();
 }
+
+// #ifndef STATIC_BUILD
+// extern "C" std::shared_ptr<sevens::PlayerStrategy> createStrategy() {
+//     return std::make_shared<sevens::MySmartStrategy>();
+// }
+// #endif
+
+#ifdef BUILD_SHARED_LIB
+extern "C" sevens::PlayerStrategy* createStrategy() {
+    return new sevens::MySmartStrategy();
+}
+#endif
 
 } // namespace sevens

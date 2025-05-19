@@ -6,6 +6,7 @@
 #include <chrono> // Pour initialiser le générateur avec l'heure actuelle 
 #include <string>  // Gérer des chaînes de caractères dynamiques, avec une gestion automatique de la mémoire
 #include <cstdint>
+#include <algorithm>
 
 namespace sevens {
 
@@ -71,7 +72,7 @@ void MyGameMapper::read_game(const std::string& filename) {
         for (const auto& [id, card] : cards_hashmap) { 
         // const auto& : Utilise une référence constante (évite de copier chaque élément, ce qui améliore la performance). 
         // [id, card] : Utilise la décomposition structurée pour directement capturer
-            if (card.rank == 6 && card.suit >= 0 && card.suit <= 3) {
+            if (card.rank == 6 && card.suit <= 3) { // card.suit est de type unsigned (non signé). Comparer un type non signé avec >= 0 est toujours vrai, ce qui rend cette condition redondante.
                 table_layout[static_cast<uint64_t>(card.suit)][static_cast<uint64_t>(card.rank)] = true;
             }
         }

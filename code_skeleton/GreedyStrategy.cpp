@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstdint>
+#include <memory> 
 
 namespace sevens {
 
@@ -12,7 +13,8 @@ void GreedyStrategy::initialize(uint64_t playerID) {
 
 int GreedyStrategy::selectCardToPlay(
     const std::vector<Card>& hand,
-    const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout)
+    // utiliser l'attribut [[maybe_unused]] pour éviter l'avertissement de paramètre inutilisé tout en indiquant que tu prévois potentiellement de l'utiliser plus tard.
+    [[maybe_unused]] const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout)
 {
     // A trivial "greedy" approach:
     // 1. If the hand is empty, pass (-1).
@@ -37,9 +39,12 @@ void GreedyStrategy::observePass(uint64_t /*playerID*/) {
 std::string GreedyStrategy::getName() const {
     return "GreedyStrategy";
 }
-#ifndef STATIC_BUILD
-extern "C" sevens::PlayerStrategy* createStrategy() {
-    return new sevens::GreedyStrategy(); 
-}
-#endif
+// #ifndef STATIC_BUILD
+// // extern "C" sevens::PlayerStrategy* createStrategy() {
+// //     return new sevens::GreedyStrategy(); 
+// // }
+// extern "C" std::shared_ptr<sevens::PlayerStrategy> createStrategy() {
+//     return std::make_shared<sevens::GreedyStrategy>();
+// }
+// #endif
 } // namespace sevens

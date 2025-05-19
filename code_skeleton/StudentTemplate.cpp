@@ -5,6 +5,7 @@
 #include <random>
 #include <chrono>
 #include <cstdint>
+#include <memory>
 
 namespace sevens {
 
@@ -30,8 +31,8 @@ public:
     }
     
     int selectCardToPlay(
-        const std::vector<Card>& hand,
-        const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout) override 
+        [[maybe_unused]] const std::vector<Card>& hand,
+        [[maybe_unused]] const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout) override 
     {
         // TODO: implement logic
         // Return index in hand for the card to play, or -1 if pass
@@ -59,8 +60,15 @@ private:
     std::mt19937 rng;
 };
 
-extern "C" PlayerStrategy* createStrategy() {
-    return new StudentStrategy();
-}
+// extern "C" PlayerStrategy* createStrategy() {
+//     return new StudentStrategy();
+// }
+
+// #ifndef STATIC_BUILD
+// extern "C" std::shared_ptr<sevens::PlayerStrategy> createStrategy() {
+//     // Tu peux adapter ici si tu as une classe personnalisée
+//     return nullptr; // ou une vraie stratégie
+// }
+// #endif
 
 } // namespace sevens

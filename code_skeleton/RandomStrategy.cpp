@@ -5,6 +5,7 @@
 #include <random>
 #include <iostream>
 #include <cstdint>
+#include <memory>
 
 namespace sevens {
 
@@ -23,7 +24,7 @@ void RandomStrategy::initialize(uint64_t playerID) {
 
 int RandomStrategy::selectCardToPlay(
     const std::vector<Card>& hand,
-    const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout)
+    [[maybe_unused]] const std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>>& tableLayout)
 {
     // Very simplified logic:
     // 1. If our hand is empty, we can't play => return -1
@@ -50,9 +51,12 @@ void RandomStrategy::observePass(uint64_t /*playerID*/) {
 std::string RandomStrategy::getName() const {
     return "RandomStrategy";
 }
-#ifndef STATIC_BUILD
-extern "C" sevens::PlayerStrategy* createStrategy() {
-    return new sevens::RandomStrategy(); 
-}
-#endif
+// #ifndef STATIC_BUILD
+// // extern "C" sevens::PlayerStrategy* createStrategy() {
+// //     return new sevens::RandomStrategy(); 
+// // }
+// extern "C" std::shared_ptr<sevens::PlayerStrategy> createStrategy() {
+//     return std::make_shared<sevens::RandomStrategy>();
+// }
+// #endif
 } // namespace sevens
