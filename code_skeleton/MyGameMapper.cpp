@@ -92,6 +92,15 @@ bool MyGameMapper::hasRegisteredStrategies() const {
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+// ✅ Nouvelle méthode pour obtenir le nombre de stratégies enregistrées
+size_t MyGameMapper::getRegisteredPlayerCount() const {
+    return playerStrategies.size();
+}
+
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 void MyGameMapper::registerStrategy(uint64_t playerID, std::shared_ptr<PlayerStrategy> strategy) {
     // TODO: store the strategy so we can use it during simulation
     // (void)playerID;

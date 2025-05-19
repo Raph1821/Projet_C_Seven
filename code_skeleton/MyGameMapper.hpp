@@ -38,6 +38,9 @@ public:
     void registerStrategy(uint64_t playerID, std::shared_ptr<PlayerStrategy> strategy); // std::shared_ptr --> possession partagée comptage automatique des références, 'registerStrategy' permet d'associer une stratégie d'IA(ou humain) à un jouer spécifique via son ID  
     bool hasRegisteredStrategies() const;
 
+    // ✅ Nouvelle méthode pour obtenir le nombre de stratégies enregistrées
+    size_t getRegisteredPlayerCount() const;
+
 private:
     // You can define any data structures needed to track the game
     // E.g., player hands, table layout, random engine, etc.
