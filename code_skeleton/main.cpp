@@ -4,7 +4,10 @@
 #include "StrategyLoader.hpp"
 #include "MyGameMapper.hpp"
 
-#ifdef STATIC_BUILD
+#ifdef STATIC_BUILD 
+// vérifie si la macro STATIC_BUILD a été définie avant la compilation.
+// Si oui, le code entre #ifdef STATIC_BUILD et #else est inclus dans la compilation
+// Sinon, le code après #else est pris en compte
 #include "RandomStrategy.hpp"
 #include "GreedyStrategy.hpp"
 #endif
