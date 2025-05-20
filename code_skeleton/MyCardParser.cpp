@@ -10,6 +10,7 @@ namespace sevens {
 void MyCardParser::read_cards(const std::string& filename) {
     // TODO: For example, create a standard 52-card deck.
     // Or read from an input file.
+    cards_hashmap.clear();
     std::ifstream file(filename);   // Essayer d'ouvrir le fichier 
     if (file.is_open()){    // Si le fichier existe et peut être ouvert 
         std::cout << "[MyCardParser::read_cards] Lecture du fichier" << filename << std::endl;
@@ -32,13 +33,14 @@ void MyCardParser::read_cards(const std::string& filename) {
             }
         }
         std::cout << "[MyCardParser::read_cards] Cartes lues avec succès à partir du fichier." << std::endl;
+        file.close();
     }else{
-        std::cout << "[MyCardParser::read_cards] Fichier introuvable, création d'un paquet standard de 52 cartes." << std::endl;
+        std::cout << "[MyCardParser::read_cards] File not found, generating default deck...\n";
 
         // Si le fichier n'existe pas, créer un paquet standard de 52 cartes
         uint64_t card_id = 0; // ID unique pour chaque carte 
         for (int suit=0;suit<4;suit++){
-            for (int rank=0;rank<52;rank++){
+            for (int rank=0;rank<13;rank++){ // Correction : 13 ranks instead of 52 
                 this->cards_hashmap[card_id] = Card(static_cast<uint64_t>(suit), static_cast<uint64_t>(rank));;// Ajouter la carte au hashmap 
                 card_id++;
             }

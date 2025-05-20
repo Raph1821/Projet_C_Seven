@@ -118,6 +118,8 @@ void MyGameMapper::registerStrategy(uint64_t playerID, std::shared_ptr<PlayerStr
 }
 
 
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 const std::unordered_map<uint64_t, std::shared_ptr<PlayerStrategy>>& MyGameMapper::getPlayerStrategies() const {
     return playerStrategies;
@@ -128,227 +130,127 @@ const std::unordered_map<uint64_t, std::shared_ptr<PlayerStrategy>>& MyGameMappe
 
 
 // Simule une partie sans affichage, renvoie la progression du jeu (sous forme de paires suit/rank)
-// std::vector<std::pair<uint64_t, uint64_t>>MyGameMapper::compute_game_progress(uint64_t numPlayers)
-// {
-//     // TODO: implement a quiet simulation
-//     // Return e.g. (playerID, finalRank) for each player
-
-//     // Réinitialiser les résultats
-//     finalResults.clear();
-
-//     // Initialiser les mains des joueurs
-//     playerHands.clear();
-    
-//     for (const auto& [playerID, _] : playerStrategies) {
-//         playerHands[playerID] = {};  // Initialise une main vide pour chaque stratégie enregistrée
-//     }
-
-//     // Distribuer les cartes aux joueurs (simple exemple avec des cartes séquentielles)
-//     for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-//         playerHands[playerID] = {}; // Chaque joueur a une main vide 
-//         for (uint64_t rank = 0; rank < 13; ++rank) { // 13 ranks de 0 à 12
-//             playerHands[playerID].emplace_back(playerID % 4, rank); // Chaque joueur a 13 cartes (suit varie) / %4 est utilisé pour répartir les "suits" parmi les joueurs de manière cyclique. on s'assure que la valeur du "suit" est toujours comprise entre 0 et 3.
-//         }
-//     }
-
-//     // Create and shuffle deck
-//     std::vector<Card> deck;
-//     for (const auto& [id, card] : cards_hashmap) {
-//         deck.push_back(card);
-//     }
-//     std::shuffle(deck.begin(), deck.end(), random_engine);
-
-//     // Distribute cards evenly
-//     for (size_t i = 0; i < deck.size(); ++i) {
-//         playerHands[i % numPlayers].push_back(deck[i]);
-//     }
-
-//     // Simulation de la partie
-//     for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-//         auto strategyIt = playerStrategies.find(playerID); // Rechercher une stratégie pour ce joueur
-//         if (strategyIt != playerStrategies.end()) { // Si une stratégie est définie
-//             auto& strategy = strategyIt->second; // Récupérer la stratégie
-//             auto& hand = playerHands[playerID];  // Obtenir la main du joueur -> pointe directement sur le vecteur de cartes du joueur identifié par playerID -> playerHands[playerID] Accède au vecteur de cartes associé au joueur avec l'identifiant playerID dans la map playerHands
-
-//             uint64_t cardIndex = strategy->selectCardToPlay(hand, table_layout); // La stratégie choisit une carte
-//             if (cardIndex >= hand.size()) {
-//     std::cerr << "[ERREUR] Strategie a retourné un index invalide : " << cardIndex
-//               << " (taille de la main : " << hand.size() << ") pour le joueur " << playerID << std::endl;
-//     continue;
-// }
-//             if (cardIndex < hand.size()) {  // Vérifier si l'indice est valide 
-//                 Card card = hand[cardIndex];// La carte sélectionnée 
-//                 if (card.suit <= 3 && card.rank <= 12) {
-//                      table_layout[card.suit][card.rank] = true;
-//                      } else {
-//     std::cerr << "[ERREUR] Carte invalide jouée : suit=" << card.suit << ", rank=" << card.rank << std::endl;
-// }
-
-// hand.erase(hand.begin() + static_cast<int>(cardIndex));
-                
-//             }
-//         }
-//     }
-
-//     // Collecter nombre de cartes restantes
-//     std::vector<std::pair<uint64_t, uint64_t>> playerRemainingCards;
-//     for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-//         playerRemainingCards.emplace_back(playerID, playerHands[playerID].size()); // Stocker (playerID, cartes restantes)
-//     }
-
-//     // Trier par nombre de cartes restantes (ascendant)
-//     std::sort(playerRemainingCards.begin(), playerRemainingCards.end(), // 3 arguments : point de départ, point final du tri, une fonction lambda (fonction anonyme) utilisé pour définir la logique de tri 
-//         [](const auto& a, const auto& b) { // [] Définit une lambda (une fonction anonyme en ligne) -> Les crochets [] signifient qu'il n'y a pas de capture de variables extérieures 
-//             return a.second < b.second; // Moins de cartes = meilleur rang
-//         });
-
-//         // playerRemainingCards = {
-//         //     {0, 5},  // Joueur 0 a 5 cartes restantes
-//         //     {1, 3},  // Joueur 1 a 3 cartes restantes
-//         //     {2, 7}   // Joueur 2 a 7 cartes restantes
-//         // };
-
-//         // playerRemainingCards = {
-//         //     {1, 3},  // Joueur 1 (3 cartes) --> 1er
-//         //     {0, 5},  // Joueur 0 (5 cartes) --> 2ème
-//         //     {2, 7}   // Joueur 2 (7 cartes) --> 3ème
-//         // };
-
-//     // Assigner le rang selon l'ordre trié (rang 1 = moins de cartes restantes)
-//     finalResults.clear();
-//     uint64_t rank = 1;
-//     for (const auto& prc : playerRemainingCards) {
-//         finalResults.emplace_back(prc.first, rank); // Assigner le rang au joueur
-//         rank++;
-//     }
-
-//     return finalResults;
-    
-//     // return {};
-// }
-
 std::vector<std::pair<uint64_t, uint64_t>> MyGameMapper::compute_game_progress(uint64_t numPlayers) {
-    finalResults.clear();
-    playerHands.clear();
-
-    // Initialize player hands
-    for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-        playerHands[playerID] = {};
+    if (numPlayers < 3 || numPlayers > 7) {
+        throw std::runtime_error("[MyGameMapper] Number of players must be between 3 and 7.");
     }
 
-    // Create and shuffle deck
+    finalResults.clear();
+    playerHands.clear();
+    playerScores.clear();
+
+    for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
+        playerHands[playerID] = {};
+        playerScores[playerID] = 0;
+    }
+
     std::vector<Card> deck;
     for (const auto& [id, card] : cards_hashmap) {
         deck.push_back(card);
     }
-    std::shuffle(deck.begin(), deck.end(), random_engine);
 
-    // Distribute cards evenly
-    for (size_t i = 0; i < deck.size(); ++i) {
-        playerHands[i % numPlayers].push_back(deck[i]);
-    }
-
-    // Simulate game
     bool gameOver = false;
-    std::vector<uint64_t> finishedPlayers;
     while (!gameOver) {
-        for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-            if (std::find(finishedPlayers.begin(), finishedPlayers.end(), playerID) != finishedPlayers.end()) {
-                continue; // Skip players who finished
+        // Reset table and redistribute cards for new round
+        table_layout.clear();
+        std::shuffle(deck.begin(), deck.end(), random_engine);
+        for (size_t i = 0; i < deck.size(); ++i) {
+            playerHands[i % numPlayers].push_back(deck[i]);
+        }
+        for (const auto& [id, card] : cards_hashmap) {
+            if (card.rank == 6 && card.suit <= 3) {
+                table_layout[card.suit][card.rank] = true;
             }
+        }
 
-            auto strategyIt = playerStrategies.find(playerID);
-            if (strategyIt == playerStrategies.end()) {
-                std::cerr << "[MyGameMapper] No strategy for player " << playerID << "\n";
-                continue;
-            }
-
-            auto& strategy = strategyIt->second;
-            auto& hand = playerHands[playerID];
-
-            if (hand.empty()) {
-                if (std::find(finishedPlayers.begin(), finishedPlayers.end(), playerID) == finishedPlayers.end()) {
-                    finishedPlayers.push_back(playerID);
-                    finalResults.emplace_back(playerID, finishedPlayers.size());
-                    if (verboseMode) {
-                        std::cout << strategy->getName() << "-" << playerID << " finished with rank " << finishedPlayers.size() << "!\n";
-                    }
+        // Simulate one round
+        bool roundOver = false;
+        uint64_t winnerID = 0;
+        while (!roundOver) {
+            for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
+                auto strategyIt = playerStrategies.find(playerID);
+                if (strategyIt == playerStrategies.end()) {
+                    std::cerr << "[MyGameMapper] No strategy for player " << playerID << "\n";
+                    continue;
                 }
-                if (finishedPlayers.size() == numPlayers) {
-                    gameOver = true;
+
+                auto& strategy = strategyIt->second;
+                auto& hand = playerHands[playerID];
+
+                if (hand.empty()) {
+                    roundOver = true;
+                    winnerID = playerID;
+                    if (verboseMode) {
+                        std::cout << strategy->getName() << "-" << playerID << " finished with rank 1 in this round!\n";
+                    }
                     break;
                 }
-                continue;
-            }
 
-            int cardIndex = strategy->selectCardToPlay(hand, table_layout);
-            if (cardIndex < 0 || static_cast<size_t>(cardIndex) >= hand.size()) {
-                strategy->observePass(playerID);
-                if (verboseMode) {
-                    std::cout << strategy->getName() << "-" << playerID << " passes\n";
-                }
-                continue;
-            }
-
-            Card card = hand[cardIndex];
-            if (card.suit <= 3 && card.rank <= 12) {
-                bool playable = false;
-                if (card.rank == 6 && (table_layout.find(card.suit) == table_layout.end() ||
-                                       table_layout[card.suit].find(6) == table_layout[card.suit].end())) {
-                    playable = true;
-                } else if (table_layout.find(card.suit) != table_layout.end()) {
-                    const auto& suitLayout = table_layout[card.suit];
-                    if ((card.rank > 0 && suitLayout.find(card.rank - 1) != suitLayout.end()) ||
-                        (card.rank < 12 && suitLayout.find(card.rank + 1) != suitLayout.end())) {
-                        playable = true;
-                    }
-                }
-
-                if (playable) {
-                    table_layout[card.suit][card.rank] = true;
-                    if (verboseMode) {
-                        std::cout << strategy->getName() << "-" << playerID << " plays " << card << "\n";
-                    }
-                    for (uint64_t otherID = 0; otherID < numPlayers; ++otherID) {
-                        if (otherID != playerID) {
-                            auto otherIt = playerStrategies.find(otherID);
-                            if (otherIt != playerStrategies.end()) {
-                                otherIt->second->observeMove(playerID, card);
-                            }
+                int cardIndex = strategy->selectCardToPlay(hand, table_layout);
+                if (cardIndex >= 0 && static_cast<size_t>(cardIndex) < hand.size()) {
+                    Card card = hand[cardIndex];
+                    bool playable = (card.rank == 6 && !table_layout[card.suit].count(6)) ||
+                                    (table_layout[card.suit].count(card.rank - 1) || table_layout[card.suit].count(card.rank + 1));
+                    if (playable) {
+                        table_layout[card.suit][card.rank] = true;
+                        if (verboseMode) {
+                            std::cout << strategy->getName() << "-" << playerID << " plays " << card << "\n";
+                        }
+                        hand.erase(hand.begin() + cardIndex);
+                    } else {
+                        if (verboseMode) {
+                            std::cout << strategy->getName() << "-" << playerID << " passes (invalid card)\n";
                         }
                     }
-                    hand.erase(hand.begin() + cardIndex);
                 } else {
-                    std::cerr << "[MyGameMapper] Invalid card played by " << strategy->getName() << "-" << playerID
-                              << ": " << card << "\n";
-                    strategy->observePass(playerID);
                     if (verboseMode) {
-                        std::cout << strategy->getName() << "-" << playerID << " passes (invalid card)\n";
+                        std::cout << strategy->getName() << "-" << playerID << " passes\n";
                     }
                 }
-            } else {
-                std::cerr << "[MyGameMapper] Invalid card data: suit=" << card.suit << ", rank=" << card.rank << "\n";
+            }
+        }
+
+        // Award points for leftover cards
+        for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
+            if (playerID != winnerID) {
+                playerScores[playerID] += playerHands[playerID].size();
+                if (verboseMode) {
+                    std::cout << playerStrategies[playerID]->getName() << "-" << playerID << " scored " << playerHands[playerID].size() << " points\n";
+                }
+            }
+            playerHands[playerID].clear(); // Prepare for next round
+        }
+
+        // Check game over condition
+        for (const auto& [playerID, score] : playerScores) {
+            if (score >= 50) {
+                gameOver = true;
+                break;
             }
         }
     }
 
-    // Rank remaining players by cards left
-    std::vector<std::pair<uint64_t, uint64_t>> playerRemainingCards;
-    for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
-        if (std::find(finishedPlayers.begin(), finishedPlayers.end(), playerID) == finishedPlayers.end()) {
-            playerRemainingCards.emplace_back(playerID, playerHands[playerID].size());
+    // Determine final rankings
+    uint64_t lastPlaceID = 0;
+    for (const auto& [playerID, score] : playerScores) {
+        if (score >= 50) {
+            lastPlaceID = playerID;
+            break;
         }
     }
-    std::sort(playerRemainingCards.begin(), playerRemainingCards.end(),
-        [](const auto& a, const auto& b) { return a.second < b.second; });
+    finalResults.emplace_back(lastPlaceID, numPlayers); // Last place (rank = numPlayers)
 
-    for (const auto& prc : playerRemainingCards) {
-        finalResults.emplace_back(prc.first, finishedPlayers.size() + 1);
-        if (verboseMode) {
-            std::cout << playerStrategies[prc.first]->getName() << "-" << prc.first
-                      << " is last, rank " << finishedPlayers.size() + 1 << "!\n";
+    std::vector<std::pair<uint64_t, uint64_t>> remainingPlayers;
+    for (uint64_t playerID = 0; playerID < numPlayers; ++playerID) {
+        if (playerID != lastPlaceID) {
+            remainingPlayers.emplace_back(playerID, playerScores[playerID]);
         }
-        finishedPlayers.push_back(prc.first);
+    }
+    std::sort(remainingPlayers.begin(), remainingPlayers.end(),
+              [](const auto& a, const auto& b) { return a.second < b.second; });
+
+    for (size_t i = 0; i < remainingPlayers.size(); ++i) {
+        finalResults.emplace_back(remainingPlayers[i].first, i + 1);
     }
 
     return finalResults;
@@ -360,6 +262,9 @@ std::vector<std::pair<uint64_t, uint64_t>> MyGameMapper::compute_game_progress(u
 
 std::vector<std::pair<uint64_t, uint64_t>>MyGameMapper::compute_and_display_game(uint64_t numPlayers)
 {
+    if (numPlayers < 3 || numPlayers > 7) {
+        throw std::runtime_error("[MyGameMapper] Number of players must be between 3 and 7.");
+    }
     // TODO: implement a verbose simulation
     std::cout << "[MyGameMapper::compute_and_display_game] Starting verbose Sevens with " << numPlayers << " players.\n";
     
@@ -382,6 +287,9 @@ std::vector<std::pair<uint64_t, uint64_t>>MyGameMapper::compute_and_display_game
 
 std::vector<std::pair<std::string, uint64_t>>MyGameMapper::compute_game_progress(const std::vector<std::string>& playerNames)
 {
+    if (playerNames.size() < 3 || playerNames.size() > 7) {
+        throw std::runtime_error("[MyGameMapper] Number of players must be between 3 and 7.");
+    }
     // Optional overload for name-based players
     //(void)playerNames;
     std::cout << "[MyGameMapper::compute_game_progress(names)] Simulating game with named players.\n";
@@ -408,6 +316,9 @@ std::vector<std::pair<std::string, uint64_t>>MyGameMapper::compute_game_progress
 
 std::vector<std::pair<std::string, uint64_t>>MyGameMapper::compute_and_display_game(const std::vector<std::string>& playerNames)
 {
+    if (playerNames.size() < 3 || playerNames.size() > 7) {
+        throw std::runtime_error("[MyGameMapper] Number of players must be between 3 and 7.");
+    }
     // Optional overload for name-based players
     //(void)playerNames;
     std::cout << "[MyGameMapper::compute_and_display_game(names)] Starting verbose Sevens with named players.\n";

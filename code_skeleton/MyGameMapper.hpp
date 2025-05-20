@@ -63,6 +63,9 @@ private:
 
     // Mode d'affichage verbeux (utile pour debug ou affichage utilisateur)
     bool verboseMode = false ;
+
+    // Track scores for each player
+    std::unordered_map<uint64_t, uint64_t> playerScores; 
 };
 
 } // namespace sevens
