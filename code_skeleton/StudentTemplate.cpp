@@ -60,15 +60,10 @@ private:
     std::mt19937 rng;
 };
 
-// extern "C" PlayerStrategy* createStrategy() {
-//     return new StudentStrategy();
-// }
-
-// #ifndef STATIC_BUILD
-// extern "C" std::shared_ptr<sevens::PlayerStrategy> createStrategy() {
-//     // Tu peux adapter ici si tu as une classe personnalisée
-//     return nullptr; // ou une vraie stratégie
-// }
-// #endif
+#ifdef BUILD_SHARED_LIB
+extern "C" sevens::PlayerStrategy* createStrategy() {
+    return new sevens::StudentStrategy();
+}
+#endif
 
 } // namespace sevens

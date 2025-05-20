@@ -38,8 +38,9 @@ public:
     // Strategy management
     void registerStrategy(uint64_t playerID, std::shared_ptr<PlayerStrategy> strategy); // std::shared_ptr --> possession partagée comptage automatique des références, 'registerStrategy' permet d'associer une stratégie d'IA(ou humain) à un jouer spécifique via son ID  
     bool hasRegisteredStrategies() const;
+    const std::unordered_map<uint64_t, std::shared_ptr<PlayerStrategy>>& getPlayerStrategies() const;
 
-    // ✅ Nouvelle méthode pour obtenir le nombre de stratégies enregistrées
+    // Nouvelle méthode pour obtenir le nombre de stratégies enregistrées
     size_t getRegisteredPlayerCount() const;
 
 private:
@@ -47,20 +48,20 @@ private:
     // E.g., player hands, table layout, random engine, etc.
     // ...
 
-    // 🔁 Stratégies assignées à chaque joueur (playerID -> stratégie)
+    // Stratégies assignées à chaque joueur (playerID -> stratégie)
     std::unordered_map<uint64_t,std::shared_ptr<PlayerStrategy>> playerStrategies;
 
-    // 🎲 Générateur de nombres aléatoires pour les actions aléatoires (distribution des cartes,etc)
+    // Générateur de nombres aléatoires pour les actions aléatoires (distribution des cartes,etc)
     std::mt19937 random_engine ; // std::mt19937 est un moteur de génération de nombres pseudo-alétoire (algo Mersenne Twister version de 19937 bits de période)
 
-    // 🃏 Main de chaque joueur (playerID -> vecteur de cartes)
+    // Main de chaque joueur (playerID -> vecteur de cartes)
     // Chaque carte est représentée par un couple (suit,rank)
     std::unordered_map<uint64_t,std::vector<Card>> playerHands;
 
-    // 🏁 Résultats finaux du jeu (playerID -> range obtenu)
+    // Résultats finaux du jeu (playerID -> range obtenu)
     std::vector<std::pair<uint64_t,uint64_t>> finalResults;
 
-    // 📣 Mode d'affichage verbeux (utile pour debug ou affichage utilisateur)
+    // Mode d'affichage verbeux (utile pour debug ou affichage utilisateur)
     bool verboseMode = false ;
 };
 

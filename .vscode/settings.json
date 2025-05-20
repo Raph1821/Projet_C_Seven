@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.tex": "latex",
         "unordered_map": "cpp",
         "xstring": "cpp",
         "algorithm": "cpp",
@@ -61,6 +62,8 @@
         "xloctime": "cpp",
         "xmemory": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "set": "cpp",
+        "xtree": "cpp"
     }
 }

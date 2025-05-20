@@ -62,40 +62,52 @@ int main(int argc, char* argv[]) {
 
             mapper.registerStrategy(0, std::make_shared<sevens::RandomStrategy>());
             mapper.registerStrategy(1, std::make_shared<sevens::GreedyStrategy>());
+            mapper.registerStrategy(2, std::make_shared<sevens::GreedyStrategy>());
+            mapper.registerStrategy(3, std::make_shared<sevens::GreedyStrategy>());
+            mapper.compute_and_display_game(4);
 
-            mapper.compute_and_display_game(2);
         #else
             std::cerr << "[main] Demo mode is not available without STATIC_BUILD.\n";
         #endif
     }
     else if (mode == "competition") {
-        std::cout << "[main] Starting competition with " << (argc - 2) << " strategy libraries.\n";
+        int numPlayers=argc-2;
+        if (numPlayers < 3 || numPlayers > 7) {
+            std::cerr << "[main] Competition mode requires between 3 and 7 strategy libraries.\n";
+            return 1;
+        }
+
+        std::cout << "[main] Starting competition with " << (argc - 2) << " players...\n";
     
         //sevens::MyGameMapper mapper;
 
         for (int i = 2; i < argc; ++i) {
             std::string libPath = argv[i];
-            std::cout << "[main] Loading: " << libPath << std::endl;
+            std::cout << "[main] Loading strategy from " << libPath << "...\n";
 
             try {
                 auto strategy = sevens::StrategyLoader::loadFromLibrary(libPath);
                 if (strategy) {
                     mapper.registerStrategy(i - 2, strategy); // i - 2 car player 0 = argv[2]
                 } else {
-                    std::cerr << "[main] Failed to load strategy from " << libPath << std::endl;
+                    std::cerr << "[main] Failed to load strategy from " << libPath << "\n";
                 }
             } catch (const std::exception& e) {
-                std::cerr << "[main] Error loading " << libPath << ": " << e.what() << std::endl;
+                std::cerr << "[main] Error loading " << libPath << ": " << e.what() << "\n";
             }
         }
 
-        if (mapper.getRegisteredPlayerCount()==0){
-            std::cerr << "[main] No valid strategies loaded. Exiting ...\n" ;
+        if (mapper.getRegisteredPlayerCount() != static_cast<size_t>(numPlayers)){
+            std::cerr << "[main] Exactly " << numPlayers << " strategies must be loaded. Exiting...\n";
             return 1; 
         }
 
-        mapper.compute_and_display_game(mapper.getRegisteredPlayerCount()); //argc - 2); // Nombre de joueurs = nombre de libs
-    
+        auto results = mapper.compute_and_display_game(mapper.getRegisteredPlayerCount()); //argc - 2); // Nombre de joueurs = nombre de libs
+        std::cout << "[main] Competition Results:\n";
+
+        for (const auto& result : results) {
+            std::cout << "  " << mapper.getPlayerStrategies().at(result.first)->getName() << "-" << result.first << " -> Final Rank " << result.second << "\n";
+        }
     }else{
         std::cerr << "[main] Unknown mode: " << mode << std::endl;
         std::cerr << "Available modes : internal, demo, competition\n";
@@ -105,3 +117,5 @@ int main(int argc, char* argv[]) {
     
     return 0;
 }
+
+//#endif 
